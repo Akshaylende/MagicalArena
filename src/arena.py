@@ -27,7 +27,7 @@ class Arena:
                     break
 
             start = False
-            
+
             # Altering the player's Turn 
             self.playTurn(self.playerB, self.playerA)
             if self.checkAlive(self.playerA) == False:
@@ -37,7 +37,21 @@ class Arena:
 
     # This method is used to play turn by players 
     def playTurn(self, attacker : Player, defender : Player) -> None:
-        pass 
+        # Rolling Dices from both the players
+        attackersRoll = self.dice.roll()
+        defendersRoll = self.dice.roll()
+
+        # Calculating Attack Damage and Defensive strength
+        attackDamage = attacker.getAttack() * attackersRoll
+        defensiveStrength =  defender.getStrength() * defendersRoll
+
+        # Calculating Total Damage
+        damage = max(0, attackDamage - defensiveStrength)
+        defender.getDamage(damage)
+        
+        # Logging values as a step for Reference
+        print(f"{attacker.getName()} attacks with roll {attackersRoll}, {defender.getName()} defends with roll {defendersRoll}")
+        print(f"Total Damage : {attackDamage}, Total Defendive : {defensiveStrength}, {defender.getName()}'s health : {defender.getHealth()}")
 
 
     # This method is used to check if the player is Alive 
@@ -45,6 +59,11 @@ class Arena:
         if player.getHealth() == 0:
             return False
         return True
+    
+
+    # This method is used to declare the winner
+    def winner(self, player : Player) -> None:
+        print(f"Congratulations, {player.getName()} wins!")
 
 
     
